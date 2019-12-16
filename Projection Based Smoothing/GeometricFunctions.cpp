@@ -1,13 +1,13 @@
 #include "GeometricFunctions.h"
 #include <iostream>
 
-double GeometricFunctions::dotProduct(const Vector &a, const Vector &b) {
+double GeometricFunctions::dotProduct(const LineSegment &a, const LineSegment &b) {
 
 	// Calculate and return the dot product value
 	return a.getProductX() * b.getProductX() + a.getProductY() * b.getProductY() + a.getProductZ() * b.getProductZ();
 }
 
-double GeometricFunctions::crossProduct(const Vector &a, const Vector &b) {
+double GeometricFunctions::crossProduct(const LineSegment &a, const LineSegment &b) {
 
 	// Calculate and return the cross product value
 	double positivePart = a.getProductY() * b.getProductZ() + a.getProductZ() * b.getProductX() + a.getProductX() * b.getProductY();
@@ -58,7 +58,7 @@ const Vertex GeometricFunctions::findLineIntersection(const Edge &a, const Edge 
 	return Vertex(x, y);
 }
 
-const Normal GeometricFunctions::findNormal(const Vector &a, const Vector &b) {
+const Normal GeometricFunctions::findNormal(const LineSegment &a, const LineSegment &b) {
 
 	// Find the length of the normal vector in xyz-coordinates
 	// TODO - Cross product can return 0
@@ -76,7 +76,7 @@ const Normal GeometricFunctions::findNormal(const Vector &a, const Vector &b) {
 	return normal;
 }
 
-Angle GeometricFunctions::calculateAngle(const Vector &a, const Vector &b) {
+Angle GeometricFunctions::calculateAngle(const LineSegment &a, const LineSegment &b) {
 
 	// Calculate the dot product
 	double dotProduct = GeometricFunctions::dotProduct(a, b);
@@ -119,7 +119,7 @@ Angle GeometricFunctions::radiansToDegrees(const Angle angle) {
 	return angle * 180.0 / PI;
 }
 
-const Vector GeometricFunctions::normalizeVector(const Vector &vector) {
+const LineSegment GeometricFunctions::normalizeVector(const LineSegment &vector) {
 
 	// Get the length of the vector
 	double length = vector.getLength();
@@ -130,5 +130,16 @@ const Vector GeometricFunctions::normalizeVector(const Vector &vector) {
 	double z = vector.start.z + vector.getLengthZ() / length;
 
 	// Create and return the normalized vector
-	return Vector(vector.start, Vertex(x, y, z));
+	return LineSegment(vector.start, Vertex(x, y, z));
+}
+
+const Vector convertLineSegment(const LineSegment &lineSegment) {
+
+	// Get each product
+	double x = lineSegment.getProductX();
+	double y = lineSegment.getProductY();
+	double z = lineSegment.getProductZ();
+
+	// Return a vector of products
+	return Vector(x, y, z);
 }

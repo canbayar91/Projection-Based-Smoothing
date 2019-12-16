@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DerivationCalculator.cpp" />
     <ClCompile Include="DoublyLinkedList.cpp" />
     <ClCompile Include="Face.cpp" />
     <ClCompile Include="GeometricFunctions.cpp" />
@@ -158,10 +159,11 @@
     <ClCompile Include="ProjectionFunctions.cpp" />
     <ClCompile Include="Quadrilateral.cpp" />
     <ClCompile Include="Triangle.cpp" />
-    <ClCompile Include="Vector.cpp" />
+    <ClCompile Include="LineSegment.cpp" />
     <ClCompile Include="Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DerivationCalculator.h" />
     <ClInclude Include="DoublyLinkedList.h" />
     <ClInclude Include="Face.h" />
     <ClInclude Include="GeometricFunctions.h" />
@@ -174,7 +176,7 @@
     <ClInclude Include="Quadrilateral.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Triangle.h" />
-    <ClInclude Include="Vector.h" />
+    <ClInclude Include="LineSegment.h" />
     <ClInclude Include="Vertex.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -2,7 +2,7 @@
 #define PRIMITIVE
 
 #include "DoublyLinkedList.h"
-#include "Vector.h"
+#include "LineSegment.h"
 #include <string>
 
 class Primitive {

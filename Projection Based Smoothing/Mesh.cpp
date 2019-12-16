@@ -1,8 +1,7 @@
 #include "Mesh.h"
 #include "JacobianCalculator.h"
+#include "DerivationCalculator.h"
 #include <iostream>
-
-double max = 0;
 
 Mesh::Mesh() {
 	// Default constructor
@@ -72,13 +71,88 @@ unsigned int Mesh::getEdgeCount() {
 void Mesh::smooth() {
 
 	for (size_t i = 0; i < vertexList.size(); i++) {
-		double conditionNumber = calculateConditionNumber(i);
-		if (conditionNumber > max) {
-			max = conditionNumber;
+		processVertex(i);
+	}
+}
+
+void Mesh::processVertex(unsigned int index) {
+
+	// Get the vertex with the given index
+	NeighborhoodVertex* current = vertexList[index];
+
+	// Iterate through the adjacent faces of the given vertex
+	std::vector<unsigned int> adjacentFaces = faceMapping[index];
+	for (unsigned int faceId : adjacentFaces) {
+
+		// For each face, get the quadrilateral data
+		Quadrilateral* face = faceList[faceId]->getQuadrilateral();
+
+		// A new derivation calculator instance is created for each neighbor face
+		DerivationCalculator derivationCalculator(current, face);
+
+		// Find the node that stores the given vertex 
+		Node* node = face->findNode(current);
+		if (node != NULL) {
+
+			// Find its next and previous vertices
+			NeighborhoodVertex* p4 = node->next->data;
+			NeighborhoodVertex* p2 = node->prev->data;
+
+			// Find the normal of the triangle that includes the vertex
+			const LineSegment CD(current->coordinates, p4->coordinates);
+			const LineSegment CB(current->coordinates, p2->coordinates);
+			const Normal normalP3 = GeometricFunctions::findNormal(CD, CB);
+
+			// Find the remaining vertix
+			NeighborhoodVertex* p1 = node->next->next->data;
+
+			// Find the normal of the triangle that doesn't include the vertex
+			const LineSegment AB(p1->coordinates, p2->coordinates);
+			const LineSegment AD(p1->coordinates, p4->coordinates);
+			const Normal normal = GeometricFunctions::findNormal(AB, AD);
+
+			// Find the angle between triangle normals
+			Angle beta = GeometricFunctions::calculateAngle(normalP3, normal);
+			if (beta > THETA) {
+
+				// Untangling vector is only calculated when the triangle normals show different directions
+				Vector untanglingVector = derivationCalculator.findUntanglingVector();
+				lineSearch(index, untanglingVector);
+			}
+
+			// Calculate the improvement vector along the neighbor face
+			Vector improvementVector = derivationCalculator.findImprovementVector();
+			lineSearch(index, improvementVector);
 		}
 	}
+}
 
-	std::cout << "Maximum Condition Number: " << max << std::endl;
+void Mesh::lineSearch(unsigned int index, Vector optimizationPath) {
+
+	// Get the vertex with the given index
+	NeighborhoodVertex* current = vertexList[index];
+
+	// Calculate the condition number before the improvement
+	double originalConditionNumber = calculateConditionNumber(index);
+	Vertex originalCoordinates = current->coordinates;
+
+	// Initial step size
+	double stepSize = 0.001;
+
+	// Calculate the updated coordinates on the optimization path
+	Vertex updatedCoordinates = current->coordinates + optimizationPath * stepSize;
+
+	// Calculate the condition number after the improvement
+	current->coordinates = updatedCoordinates;
+	double updatedConditionNumber = calculateConditionNumber(index);
+
+	// If condition number is not improved, restore to the previous state
+	if (updatedConditionNumber < originalConditionNumber) {
+		originalConditionNumber = updatedConditionNumber;
+		originalCoordinates = updatedCoordinates;
+	} else {
+		current->coordinates = originalCoordinates;
+	}
 }
 
 double Mesh::calculateConditionNumber(unsigned int index) {

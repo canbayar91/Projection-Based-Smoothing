@@ -2,6 +2,7 @@
 #define MESH
 
 #include "Face.h"
+#include "GeometricFunctions.h"
 #include <vector>
 #include <map>
 
@@ -21,7 +22,7 @@ public:
 	Face* getFace(size_t index);
 
 	void smooth();
-
+	
 	void setEdgeCount(unsigned int edgeCount);
 	unsigned int getEdgeCount();
 
@@ -34,6 +35,9 @@ private:
 	std::map<unsigned int, std::vector<unsigned int>> faceMapping;
 
 	unsigned int edgeCount;
+
+	void processVertex(unsigned int index);
+	void lineSearch(unsigned int index, Vector optimizationPath);
 
 	double calculateConditionNumber(unsigned int index);
 

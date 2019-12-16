@@ -15,23 +15,23 @@ const Vertex ProjectionFunctions::calculateCornerAverage(const Quadrilateral* qu
 const Normal ProjectionFunctions::calculateNormalAverage(const Quadrilateral* quadrilateral) {
 
 	// Calculate the normals on the first vertex
-	const Vector AB(quadrilateral->a->coordinates, quadrilateral->b->coordinates);
-	const Vector AD(quadrilateral->a->coordinates, quadrilateral->d->coordinates);
+	const LineSegment AB(quadrilateral->a->coordinates, quadrilateral->b->coordinates);
+	const LineSegment AD(quadrilateral->a->coordinates, quadrilateral->d->coordinates);
 	const Normal normalA = GeometricFunctions::findNormal(AB, AD);
 
 	// Calculate the normals on the second vertex
-	const Vector BC(quadrilateral->b->coordinates, quadrilateral->c->coordinates);
-	const Vector BA(quadrilateral->b->coordinates, quadrilateral->a->coordinates);
+	const LineSegment BC(quadrilateral->b->coordinates, quadrilateral->c->coordinates);
+	const LineSegment BA(quadrilateral->b->coordinates, quadrilateral->a->coordinates);
 	const Normal normalB = GeometricFunctions::findNormal(BC, BA);
 
 	// Calculate the normals on the third vertex
-	const Vector CD(quadrilateral->c->coordinates, quadrilateral->d->coordinates);
-	const Vector CB(quadrilateral->c->coordinates, quadrilateral->b->coordinates);
+	const LineSegment CD(quadrilateral->c->coordinates, quadrilateral->d->coordinates);
+	const LineSegment CB(quadrilateral->c->coordinates, quadrilateral->b->coordinates);
 	const Normal normalC = GeometricFunctions::findNormal(CD, CB);
 
 	// Calculate the normals on the fourth vertex
-	const Vector DA(quadrilateral->d->coordinates, quadrilateral->a->coordinates);
-	const Vector DC(quadrilateral->d->coordinates, quadrilateral->c->coordinates);
+	const LineSegment DA(quadrilateral->d->coordinates, quadrilateral->a->coordinates);
+	const LineSegment DC(quadrilateral->d->coordinates, quadrilateral->c->coordinates);
 	const Normal normalD = GeometricFunctions::findNormal(DA, DC);
 
 	// Create start and end vertices for the normal
@@ -51,11 +51,11 @@ const Normal ProjectionFunctions::calculateNormalAverage(const Quadrilateral* qu
 const Triangle ProjectionFunctions::projectTriangle(Triangle* triangle) {
 
 	// Create a temporary edge to complete the triangle
-	const Vector leftover(triangle->c->coordinates, triangle->b->coordinates);
+	const LineSegment leftover(triangle->c->coordinates, triangle->b->coordinates);
 
 	// Get the vectors on triangle adjacent to vertex A
-	Vector left(triangle->a->coordinates, triangle->b->coordinates);
-	Vector right(triangle->a->coordinates, triangle->c->coordinates);
+	LineSegment left(triangle->a->coordinates, triangle->b->coordinates);
+	LineSegment right(triangle->a->coordinates, triangle->c->coordinates);
 
 	// Get the edge lengths
 	double leftEdgeLength = left.getLength();
@@ -85,10 +85,10 @@ const Quadrilateral ProjectionFunctions::projectQuadrilateral(const Quadrilatera
 	const Normal normal = calculateNormalAverage(quadrilateral);
 
 	// Create vectors from the origin to the each vertex of the quadrilateral
-	const Vector vectorA(origin, quadrilateral->a->coordinates);
-	const Vector vectorB(origin, quadrilateral->b->coordinates);
-	const Vector vectorC(origin, quadrilateral->c->coordinates);
-	const Vector vectorD(origin, quadrilateral->d->coordinates);
+	const LineSegment vectorA(origin, quadrilateral->a->coordinates);
+	const LineSegment vectorB(origin, quadrilateral->b->coordinates);
+	const LineSegment vectorC(origin, quadrilateral->c->coordinates);
+	const LineSegment vectorD(origin, quadrilateral->d->coordinates);
 
 	// Calculate the distance to the plane by taking dot product of each vertex with the normal (|normal| = 1)
 	double distanceA = GeometricFunctions::dotProduct(normal, vectorA);
