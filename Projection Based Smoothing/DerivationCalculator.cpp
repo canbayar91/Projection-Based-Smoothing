@@ -28,8 +28,19 @@ Vector DerivationCalculator::findUntanglingVector() {
 	double epsilonY = deriveEpsilon(Y_AXIS);
 	double epsilonZ = deriveEpsilon(Z_AXIS);
 
+	// Calculate the derivative of eta
+	double etaX = deriveEta(X_AXIS);
+	double etaY = deriveEta(Y_AXIS);
+	double etaZ = deriveEta(Z_AXIS);
+
+	// Both epsilon and eta is used in the final vector
+	double factorX = epsilonX + etaX;
+	double factorY = epsilonY + etaY;
+	double factorZ = epsilonZ + etaZ;
+
 	// Create the final untangling vector
-	Vector untanglingVector = derivativeX * epsilonX + derivativeY * epsilonY + derivativeZ * epsilonZ;
+	Vector untanglingVector(derivativeX * factorX, derivativeY * factorY, derivativeZ * factorZ);
+	GeometricFunctions::normalizeVector(untanglingVector);
 
 	// Return the vector
 	return untanglingVector;
@@ -53,8 +64,19 @@ Vector DerivationCalculator::findImprovementVector() {
 	double epsilonY = deriveEpsilon(Y_AXIS);
 	double epsilonZ = deriveEpsilon(Z_AXIS);
 
+	// Calculate the derivative of eta
+	double etaX = deriveEta(X_AXIS);
+	double etaY = deriveEta(Y_AXIS);
+	double etaZ = deriveEta(Z_AXIS);
+
+	// Both epsilon and eta is used in the final vector
+	double factorX = epsilonX + etaX;
+	double factorY = epsilonY + etaY;
+	double factorZ = epsilonZ + etaZ;
+
 	// Create the final improvement vector
-	Vector improvementVector(derivativeX * epsilonX, derivativeY * epsilonY, derivativeZ * epsilonZ);
+	Vector improvementVector(derivativeX * factorX, derivativeY * factorY, derivativeZ * factorZ);
+	GeometricFunctions::normalizeVector(improvementVector);
 
 	// Return the vector
 	return improvementVector;

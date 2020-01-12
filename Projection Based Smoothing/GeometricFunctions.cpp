@@ -133,7 +133,19 @@ const LineSegment GeometricFunctions::normalizeVector(const LineSegment &vector)
 	return LineSegment(vector.start, Vertex(x, y, z));
 }
 
-const Vector convertLineSegment(const LineSegment &lineSegment) {
+const void GeometricFunctions::normalizeVector(Vector &vector) {
+
+	// Get the components
+	double componentX = pow(vector.x, 2);
+	double componentY = pow(vector.y, 2);
+	double componentZ = pow(vector.z, 2);
+
+	// Normalize the vector
+	double length = sqrt(componentX + componentY + componentZ);
+	vector /= length;
+}
+
+const Vector GeometricFunctions::convertLineSegment(const LineSegment &lineSegment) {
 
 	// Get each product
 	double x = lineSegment.getProductX();

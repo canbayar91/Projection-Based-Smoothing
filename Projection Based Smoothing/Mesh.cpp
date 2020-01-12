@@ -8,6 +8,13 @@ Mesh::Mesh() {
 }
 
 Mesh::~Mesh() {
+
+	// Delete all created faces
+	for (size_t i = 0; i < faceList.size(); i++) {
+		delete faceList[i];
+	}
+
+	// Delete all created vertices
 	for (size_t i = 0; i < vertexList.size(); i++) {
 		delete vertexList[i];
 	}
@@ -29,11 +36,6 @@ void Mesh::addFace(unsigned int id, Quadrilateral* quadrilateral) {
 	vertexMapping[b->id].push_back(c->id);
 	vertexMapping[c->id].push_back(d->id);
 	vertexMapping[d->id].push_back(a->id);
-
-	vertexMapping[a->id].push_back(d->id);
-	vertexMapping[b->id].push_back(a->id);
-	vertexMapping[c->id].push_back(b->id);
-	vertexMapping[d->id].push_back(c->id);
 
 	Face* face = new Face(id, quadrilateral);
 	faceList.push_back(face);
@@ -70,6 +72,7 @@ unsigned int Mesh::getEdgeCount() {
 
 void Mesh::smooth() {
 
+	// Iterate over each vertex and process them
 	for (size_t i = 0; i < vertexList.size(); i++) {
 		processVertex(i);
 	}
@@ -131,28 +134,34 @@ void Mesh::lineSearch(unsigned int index, Vector optimizationPath) {
 
 	// Get the vertex with the given index
 	NeighborhoodVertex* current = vertexList[index];
-
-	// Calculate the condition number before the improvement
-	double originalConditionNumber = calculateConditionNumber(index);
 	Vertex originalCoordinates = current->coordinates;
 
 	// Initial step size
-	double stepSize = 0.001;
+	double stepSize = INITIAL_STEP_SIZE;
 
-	// Calculate the updated coordinates on the optimization path
-	Vertex updatedCoordinates = current->coordinates + optimizationPath * stepSize;
+	 do {
 
-	// Calculate the condition number after the improvement
-	current->coordinates = updatedCoordinates;
-	double updatedConditionNumber = calculateConditionNumber(index);
+		// Calculate the condition number before the improvement
+		double originalConditionNumber = calculateConditionNumber(index);
 
-	// If condition number is not improved, restore to the previous state
-	if (updatedConditionNumber < originalConditionNumber) {
-		originalConditionNumber = updatedConditionNumber;
-		originalCoordinates = updatedCoordinates;
-	} else {
-		current->coordinates = originalCoordinates;
-	}
+		// Calculate the updated coordinates on the optimization path
+		Vertex updatedCoordinates = originalCoordinates + optimizationPath * stepSize;
+
+		// Calculate the condition number after the improvement
+		current->coordinates = updatedCoordinates;
+		double updatedConditionNumber = calculateConditionNumber(index);
+
+		// If condition number is not improved, restore to the previous state
+		if (updatedConditionNumber < originalConditionNumber) {
+			originalConditionNumber = updatedConditionNumber;
+			originalCoordinates = updatedCoordinates;
+			stepSize *= 2;
+		} else {
+			current->coordinates = originalCoordinates;
+			stepSize /= 2;
+		}
+
+	} while (stepSize > INITIAL_STEP_SIZE);
 }
 
 double Mesh::calculateConditionNumber(unsigned int index) {
@@ -179,8 +188,8 @@ double Mesh::calculateConditionNumber(unsigned int index) {
 			NeighborhoodVertex* previous = node->prev->data;
 
 			// Form a triangle using the next and previuos vertices and align it to the z = 0 plane
-			Triangle* triangle = new Triangle(current, next, previous);
-			Triangle projected = ProjectionFunctions::projectTriangle(triangle);
+			Triangle triangle(current, next, previous);
+			Triangle projected = ProjectionFunctions::projectTriangle(&triangle);
 
 			// Calculate the Jacobian condition number value for the triangle and add it to the total sum
 			double conditionNumber = JacobianCalculator::calculateConditionNumber(projected);

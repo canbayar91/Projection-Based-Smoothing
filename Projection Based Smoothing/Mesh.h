@@ -28,6 +28,8 @@ public:
 
 private:
 
+	const double INITIAL_STEP_SIZE = 1;
+
 	std::vector<NeighborhoodVertex*> vertexList;
 	std::vector<Face*> faceList;
 

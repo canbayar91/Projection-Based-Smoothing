@@ -41,6 +41,9 @@ public:
 	// Normalizes the given vector to a unit vector
 	const static LineSegment normalizeVector(const LineSegment &vector);
 
+	// Normalizes the given vector to a unit vector
+	const static void normalizeVector(Vector &vector);
+
 	// Converts a given line segment to a vector of lengths in each coordinate
 	const static Vector convertLineSegment(const LineSegment &lineSegment);
 
