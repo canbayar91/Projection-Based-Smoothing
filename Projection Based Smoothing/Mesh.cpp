@@ -115,13 +115,14 @@ void Mesh::processVertex(unsigned int index) {
 			const Normal normal = GeometricFunctions::findNormal(AB, AD);
 
 			// Find the angle between triangle normals
+			/* This block is no longer needed since we realized we don't have tangled elements
 			Angle beta = GeometricFunctions::calculateAngle(normalP3, normal);
 			if (beta > THETA) {
 
 				// Untangling vector is only calculated when the triangle normals show different directions
 				Vector untanglingVector = derivationCalculator.findUntanglingVector();
 				lineSearch(index, untanglingVector);
-			}
+			} */
 
 			// Calculate the improvement vector along the neighbor face
 			Vector improvementVector = derivationCalculator.findImprovementVector();
@@ -189,7 +190,7 @@ double Mesh::calculateConditionNumber(unsigned int index) {
 
 			// Form a triangle using the next and previuos vertices and align it to the z = 0 plane
 			Triangle triangle(current, next, previous);
-			Triangle projected = ProjectionFunctions::projectTriangle(&triangle);
+			Triangle projected = ProjectionFunctions::projectTriangle(triangle);
 
 			// Calculate the Jacobian condition number value for the triangle and add it to the total sum
 			double conditionNumber = JacobianCalculator::calculateConditionNumber(projected);

@@ -9,7 +9,7 @@ class ProjectionFunctions {
 public:
 	
 	// Projects a triangle to the z=0 plane
-	const static Triangle projectTriangle(Triangle* triangle);
+	const static Triangle projectTriangle(Triangle &triangle);
 
 	// Projects a non-planar quadrilateral onto an average plane
 	const static Quadrilateral projectQuadrilateral(const Quadrilateral* quadrilateral);

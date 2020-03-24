@@ -21,6 +21,10 @@ Triangle::Triangle(Vertex a, Vertex b, Vertex c) {
 	searcher.insert(this->c);
 }
 
+Triangle::~Triangle() {
+	searcher.clear();
+}
+
 void Triangle::output(std::string filename) const {
 
 	// Open the file in given location

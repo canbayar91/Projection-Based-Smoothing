@@ -6,9 +6,9 @@
 class JacobianCalculator {
 public:
 
-	static double calculateConditionNumber(const Triangle triangle);
-	static double calculateJacobianDeterminant(const Triangle triangle);
-	static double calculateFrobeniusNorm(const Triangle triangle);
+	static double calculateConditionNumber(const Triangle &triangle);
+	static double calculateJacobianDeterminant(const Triangle &triangle);
+	static double calculateFrobeniusNorm(const Triangle &triangle);
 
 };
 

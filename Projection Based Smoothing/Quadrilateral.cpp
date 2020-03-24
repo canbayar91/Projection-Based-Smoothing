@@ -25,6 +25,10 @@ Quadrilateral::Quadrilateral(Vertex a, Vertex b, Vertex c, Vertex d) {
 	searcher.insert(this->d);
 }
 
+Quadrilateral::~Quadrilateral() {
+	searcher.clear();
+}
+
 void Quadrilateral::output(std::string filename) const {
 
 	// Open the file in given location

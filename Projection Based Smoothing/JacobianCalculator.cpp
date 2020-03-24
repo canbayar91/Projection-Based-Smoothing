@@ -1,6 +1,6 @@
 #include "JacobianCalculator.h"
 
-double JacobianCalculator::calculateConditionNumber(const Triangle triangle) {
+double JacobianCalculator::calculateConditionNumber(const Triangle &triangle) {
 
 	// Calculate Jacobian determinant and its Frobenius norm
 	double jacobianDeterminant = calculateJacobianDeterminant(triangle);
@@ -10,7 +10,7 @@ double JacobianCalculator::calculateConditionNumber(const Triangle triangle) {
 	return pow(frobeniusNorm, 2) / (2 * jacobianDeterminant);
 }
 
-double JacobianCalculator::calculateJacobianDeterminant(const Triangle triangle) {
+double JacobianCalculator::calculateJacobianDeterminant(const Triangle &triangle) {
 
 	// Get the edge vectors on the projected triangle
 	LineSegment left(triangle.a->coordinates, triangle.c->coordinates);
@@ -23,7 +23,7 @@ double JacobianCalculator::calculateJacobianDeterminant(const Triangle triangle)
 	return determinant;
 }
 
-double JacobianCalculator::calculateFrobeniusNorm(const Triangle triangle) {
+double JacobianCalculator::calculateFrobeniusNorm(const Triangle &triangle) {
 
 	// Get the edge vectors on the projected triangle
 	LineSegment left(triangle.a->coordinates, triangle.c->coordinates);

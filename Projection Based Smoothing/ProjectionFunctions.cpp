@@ -48,14 +48,14 @@ const Normal ProjectionFunctions::calculateNormalAverage(const Quadrilateral* qu
 	return normal;
 }
 
-const Triangle ProjectionFunctions::projectTriangle(Triangle* triangle) {
+const Triangle ProjectionFunctions::projectTriangle(Triangle &triangle) {
 
 	// Create a temporary edge to complete the triangle
-	const LineSegment leftover(triangle->c->coordinates, triangle->b->coordinates);
+	const LineSegment leftover(triangle.c->coordinates, triangle.b->coordinates);
 
 	// Get the vectors on triangle adjacent to vertex A
-	LineSegment left(triangle->a->coordinates, triangle->b->coordinates);
-	LineSegment right(triangle->a->coordinates, triangle->c->coordinates);
+	const LineSegment left(triangle.a->coordinates, triangle.b->coordinates);
+	const LineSegment right(triangle.a->coordinates, triangle.c->coordinates);
 
 	// Get the edge lengths
 	double leftEdgeLength = left.getLength();
@@ -72,8 +72,7 @@ const Triangle ProjectionFunctions::projectTriangle(Triangle* triangle) {
 	const Vertex leftVertex(x, y);
 
 	// Create and return a new triangle
-	Triangle projected(middleVertex, leftVertex, rightVertex);
-	return projected;
+	return Triangle(middleVertex, leftVertex, rightVertex);
 }
 
 const Quadrilateral ProjectionFunctions::projectQuadrilateral(const Quadrilateral* quadrilateral) {

@@ -15,6 +15,7 @@ public:
 
 	Quadrilateral(NeighborhoodVertex* a, NeighborhoodVertex* b, NeighborhoodVertex* c, NeighborhoodVertex* d);
 	Quadrilateral(Vertex a, Vertex b, Vertex c, Vertex d);
+	~Quadrilateral();
 
 	void output(std::string filename) const;
 

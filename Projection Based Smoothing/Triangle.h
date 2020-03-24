@@ -14,6 +14,7 @@ public:
 
 	Triangle(NeighborhoodVertex* a, NeighborhoodVertex* b, NeighborhoodVertex* c);
 	Triangle(Vertex a, Vertex b, Vertex c);
+	~Triangle();
 	
 	void output(std::string filename) const;
 

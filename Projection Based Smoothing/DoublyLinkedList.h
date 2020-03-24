@@ -20,6 +20,8 @@ public:
 
 	unsigned int getLength();
 
+	void clear();
+
 private:
 
 	Node* head;

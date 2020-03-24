@@ -1,8 +1,8 @@
 #include "DoublyLinkedList.h"
 
 DoublyLinkedList::DoublyLinkedList() {
-	length = 0;
 	head = NULL;
+	length = 0;
 }
 
 void DoublyLinkedList::insert(NeighborhoodVertex* value) {
@@ -46,4 +46,24 @@ Node* DoublyLinkedList::find(NeighborhoodVertex* value) {
 
 unsigned int DoublyLinkedList::getLength() {
 	return length;
+}
+
+void DoublyLinkedList::clear() {
+	
+	Node* current = head;
+	while (current != current->next) {
+
+		Node* next = current->next;
+		Node* prev = current->prev;
+
+		next->prev = prev;
+		prev->next = next;
+
+		delete current;
+		current = next;
+	}
+
+	delete current;
+	head = NULL;
+	length = 0;
 }
