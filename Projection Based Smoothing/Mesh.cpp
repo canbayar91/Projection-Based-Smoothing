@@ -140,7 +140,7 @@ void Mesh::lineSearch(unsigned int index, Vector optimizationPath) {
 	// Initial step size
 	double stepSize = INITIAL_STEP_SIZE;
 
-	 do {
+	do {
 
 		// Calculate the condition number before the improvement
 		double originalConditionNumber = calculateConditionNumber(index);
@@ -189,8 +189,8 @@ double Mesh::calculateConditionNumber(unsigned int index) {
 			NeighborhoodVertex* previous = node->prev->data;
 
 			// Form a triangle using the next and previuos vertices and align it to the z = 0 plane
-			Triangle triangle(current, next, previous);
-			Triangle projected = ProjectionFunctions::projectTriangle(triangle);
+			const Triangle triangle(current, next, previous);
+			const Triangle projected = ProjectionFunctions::projectTriangle(triangle);
 
 			// Calculate the Jacobian condition number value for the triangle and add it to the total sum
 			double conditionNumber = JacobianCalculator::calculateConditionNumber(projected);

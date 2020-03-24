@@ -91,9 +91,12 @@ double DerivationCalculator::calculateJacobianDeterminant() {
 	NeighborhoodVertex* p4 = node->next->data;
 	NeighborhoodVertex* p2 = node->prev->data;
 
-	// Find the Jacobian determinant for P3 triangle
+	// Form a triangle using the next and previuos vertices and align it to the z = 0 plane
 	const Triangle triangle(p2, vertex, p4);
-	double determinant = JacobianCalculator::calculateJacobianDeterminant(triangle);
+	const Triangle projected = ProjectionFunctions::projectTriangle(triangle);
+
+	// Find the Jacobian determinant for P3 triangle
+	double determinant = JacobianCalculator::calculateJacobianDeterminant(projected);
 
 	// Return the determinant value
 	return determinant;
@@ -108,9 +111,12 @@ double DerivationCalculator::calculateFrobeniusNorm() {
 	NeighborhoodVertex* p4 = node->next->data;
 	NeighborhoodVertex* p2 = node->prev->data;
 
-	// Find the frobenius norm for P3 triangle
+	// Form a triangle using the next and previuos vertices and align it to the z = 0 plane
 	const Triangle triangle(p2, vertex, p4);
-	double frobeniusNorm = JacobianCalculator::calculateFrobeniusNorm(triangle);
+	const Triangle projected = ProjectionFunctions::projectTriangle(triangle);
+
+	// Find the frobenius norm for P3 triangle
+	double frobeniusNorm = JacobianCalculator::calculateFrobeniusNorm(projected);
 
 	// Return the frobenius norm value
 	return frobeniusNorm;

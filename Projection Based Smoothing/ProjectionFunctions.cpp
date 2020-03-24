@@ -48,7 +48,7 @@ const Normal ProjectionFunctions::calculateNormalAverage(const Quadrilateral* qu
 	return normal;
 }
 
-const Triangle ProjectionFunctions::projectTriangle(Triangle &triangle) {
+const Triangle ProjectionFunctions::projectTriangle(const Triangle &triangle) {
 
 	// Create a temporary edge to complete the triangle
 	const LineSegment leftover(triangle.c->coordinates, triangle.b->coordinates);
