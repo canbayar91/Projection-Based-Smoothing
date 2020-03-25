@@ -39,7 +39,7 @@ private:
 	unsigned int edgeCount;
 
 	void processVertex(unsigned int index);
-	void lineSearch(unsigned int index, Vector optimizationPath);
+	void lineSearch(unsigned int index, Vector &optimizationPath);
 
 	double calculateConditionNumber(unsigned int index);
 

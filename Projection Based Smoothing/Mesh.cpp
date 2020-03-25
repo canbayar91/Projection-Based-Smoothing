@@ -71,7 +71,7 @@ unsigned int Mesh::getEdgeCount() {
 }
 
 void Mesh::smooth() {
-
+	
 	// Iterate over each vertex and process them
 	for (size_t i = 0; i < vertexList.size(); i++) {
 		processVertex(i);
@@ -131,7 +131,7 @@ void Mesh::processVertex(unsigned int index) {
 	}
 }
 
-void Mesh::lineSearch(unsigned int index, Vector optimizationPath) {
+void Mesh::lineSearch(unsigned int index, Vector &optimizationPath) {
 
 	// Get the vertex with the given index
 	NeighborhoodVertex* current = vertexList[index];
